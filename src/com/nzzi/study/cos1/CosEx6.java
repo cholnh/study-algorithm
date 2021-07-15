@@ -1,4 +1,4 @@
-package com.nzzi.study.cos;
+package com.nzzi.study.cos1;
 
 public class CosEx6 {
     public int func(int record){

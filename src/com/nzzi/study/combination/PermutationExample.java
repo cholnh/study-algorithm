@@ -5,6 +5,7 @@ public class PermutationExample {
         if (depth == r) {
             for (int i = 0; i < r; i++)
                 System.out.print(array[i] + " ");
+            System.out.println();
             return;
         }
 
@@ -19,5 +20,10 @@ public class PermutationExample {
         int temp = array[arg1];
         array[arg1] = array[arg2];
         array[arg2] = temp;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1,2,3};
+        PermutationExample.permutation(arr, 1, 3, 2);
     }
 }

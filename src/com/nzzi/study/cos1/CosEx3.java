@@ -1,4 +1,4 @@
-package com.nzzi.study.cos;
+package com.nzzi.study.cos1;
 
 public class CosEx3 {
     public int solution(String pos) {
