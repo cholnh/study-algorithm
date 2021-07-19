@@ -1,15 +1,17 @@
 package com.nzzi.study.programmers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SellerSolution {
 
     public static void main(String[] args) {
         String[] enroll = {"john", "mary", "edward", "sam", "emily", "jaimie", "tod", "young"};
         String[] referral = {"-", "-", "mary", "edward", "mary", "mary", "jaimie", "edward"};
-        String[] seller = {"young", "john", "tod", "emily", "mary"};
-        int[] amount = {12, 4, 2, 5, 10};
+        String[] seller = {"mary", "young", "john", "tod", "emily", "mary", "emily"};
+        int[] amount = {2, 12, 4, 2, 3, 8, 2};
 
         int[] answer = new SellerSolution().solution(enroll, referral, seller, amount);
         for (int an : answer)
@@ -19,20 +21,25 @@ public class SellerSolution {
     public int[] solution(String[] enroll, String[] referral, String[] seller, int[] amount) {
         List<Seller> sellers = new ArrayList<>();
 
+        Map<String, Integer> memberAmountMap = new HashMap<>();
+        Map<String, Seller> memberIndexMap = new HashMap<>();
+
+        for (int i = 0; i < seller.length; i++) {
+            Integer memberAmount = memberAmountMap.get(seller[i]);
+            memberAmountMap.put(seller[i], amount[i] + (memberAmount == null ? 0 : memberAmount));
+        }
+
         for (int i = 0; i < enroll.length; i++) {
             String name = enroll[i];
-            int sumOfAmount = 0;
-            for (int j = 0; j < seller.length; j++) {
-                if (seller[j].equals(name)) {
-                    sumOfAmount += amount[j];
-                }
-            }
-            sellers.add(Seller.of(name, sumOfAmount));
+            Integer memberAmount = memberAmountMap.get(name);
+            Seller s = Seller.of(name, memberAmount == null ? 0 : memberAmount);
+            sellers.add(s);
+            memberIndexMap.put(name, s);
         }
         for (int i = 0; i < referral.length; i++) {
             String ref = referral[i];
             if (!ref.equals("-")) {
-                Seller parent = findSeller(sellers, ref);
+                Seller parent = memberIndexMap.get(ref);
                 parent.addChild(sellers.get(i));
             }
         }
@@ -40,15 +47,6 @@ public class SellerSolution {
         return sellers.stream()
                 .mapToInt(Seller::getProfit)
                 .toArray();
-    }
-
-    public Seller findSeller(List<Seller> sellers, String name) {
-        for (Seller seller : sellers) {
-            if (seller.getName().equals(name)) {
-                return seller;
-            }
-        }
-        return null;
     }
 }
 
@@ -78,17 +76,24 @@ class Seller {
     public int getProfit() {
         int myProfit = this.amount * 100;
 
-        System.out.println(name + "'s raw profit : " + myProfit);
+        int childrenInsentive = 0;
+        for (Seller child : children) {
+            int insen = child.getInsentive();
+            childrenInsentive += insen < 1 ? 0 : insen;
+        }
+        myProfit += childrenInsentive;
+        myProfit -= myProfit / 10;
+        return myProfit;
+    }
+
+    public int getInsentive() {
+        int myProfit = this.amount * 100;
 
         int childrenInsentive = 0;
         for (Seller child : children) {
-            System.out.print((child.getProfit()*0.1) + ", ");
-            childrenInsentive += (int)(child.getProfit() * 0.1);
+            childrenInsentive += child.getInsentive();
         }
-        System.out.println();
-        System.out.println(name + "'s final profit : " + (myProfit + childrenInsentive));
-        System.out.println();
-        return (int)((myProfit + childrenInsentive) * 0.9);
+        myProfit += childrenInsentive;
+        return myProfit / 10;
     }
-
 }
