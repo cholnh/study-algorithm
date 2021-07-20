@@ -1,9 +1,27 @@
 package com.nzzi.study.cos5;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class CosEx5 {
     public int solution(int[] enemies, int[] armies) {
         // 여기에 코드를 작성해주세요.
         int answer = 0;
+
+        List<Integer> armyList = Arrays.stream(armies).boxed().collect(Collectors.toList());
+        List<Integer> enemyList = Arrays.stream(enemies).boxed().collect(Collectors.toList());
+
+        for (Integer army : armyList) {
+            for (Integer enemy : enemyList) {
+                if (army >= enemy) {
+                    answer++;
+                    enemyList.remove(enemy);
+                    break;
+                }
+            }
+        }
+
         return answer;
     }
 

@@ -7,7 +7,7 @@ public class CosEx2 {
         for(int i = 0; i < walls.length; i++) {
             for(int j = i+1; j < walls.length; j++) {
                 int area = 0;
-                if(walls[i][1] > walls[j][1])
+                if(walls[i][1] < walls[j][1]) // 높이 비교
                     area = walls[i][1] * (walls[j][0] - walls[i][0]);
                 else
                     area = walls[j][1] * (walls[j][0] - walls[i][0]);

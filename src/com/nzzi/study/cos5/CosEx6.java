@@ -3,8 +3,10 @@ package com.nzzi.study.cos5;
 public class CosEx6 {
     public String solution(String s1, String s2, int p, int q) {
         // 여기에 코드를 작성해주세요.
-        String answer = "";
-        return answer;
+
+        int sum = Integer.parseInt(s1, p) + Integer.parseInt(s2, p);
+
+        return Integer.toString(sum, q);
     }
 
     // 아래는 테스트케이스 출력을 해보기 위한 main 메소드입니다.

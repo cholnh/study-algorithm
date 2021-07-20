@@ -17,7 +17,7 @@ public class CosEx3 {
         swap(numbers, mid, numbers.length-1);
 
         int left = mid + 1;
-        int right = numbers.length - 1;
+        int right = numbers.length - 2;
         while(left <= right) {
             swap(numbers, left, right);
             left = left + 1;
