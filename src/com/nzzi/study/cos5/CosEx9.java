@@ -1,9 +1,39 @@
 package com.nzzi.study.cos5;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class CosEx9 {
+
+    public int newSolution(int number, int target) {
+        if (number == target) return 0;
+
+        int depth = 1;
+        List<Set<Integer>> dp = new ArrayList<>();
+        Set<Integer> first = new HashSet<>();
+        first.add(number);
+        dp.add(0, new HashSet<>());
+        dp.add(1, first);
+
+        while (true) {
+            Set<Integer> newSet = new HashSet<>();
+            Set<Integer> preSet = dp.get(depth);
+            for (Integer preNode : preSet) {
+                for (int type = 1; type <= 3; ++type) {
+                    int value = 0;
+                    switch (type) {
+                        case 1: value = preNode + 1; break;
+                        case 2: value = preNode - 1; break;
+                        case 3: value = preNode * 2; break;
+                    }
+                    if (value == target) return depth;
+                    else newSet.add(value);
+                }
+            }
+            dp.add(newSet);
+            depth++;
+        }
+    }
+
     public int solution(int number, int target) {
         // 여기에 코드를 작성해주세요.
         int answer = 0;
@@ -91,14 +121,17 @@ public class CosEx9 {
     // 아래는 테스트케이스 출력을 해보기 위한 main 메소드입니다.
     public static void main(String[] args) {
         CosEx9 sol = new CosEx9();
-        int number1 = 11;
-        int target1 = 5877;
+        int number1 = 3;
+        int target1 = 3;
         int ret1 = sol.solution(number1, target1);
 
         // [실행] 버튼을 누르면 출력 값을 볼 수 있습니다.
         System.out.println("solution 메소드의 반환 값은 " + ret1 + " 입니다.");
         System.out.println("solution 메소드의 반환 값은 " + sol.ss1(number1, target1) + " 입니다.");
         System.out.println("solution 메소드의 반환 값은 " + sol.ss2(number1, target1) + " 입니다.");
+        System.out.println("newSolution 메소드의 반환 값은 " + sol.newSolution(number1, target1) + " 입니다.");
+
+        System.out.println();
 
         int number2 = 3;
         int target2 = 30;
@@ -108,6 +141,7 @@ public class CosEx9 {
         System.out.println("solution 메소드의 반환 값은 " + ret2 + " 입니다.");
         System.out.println("solution 메소드의 반환 값은 " + sol.ss1(number2, target2) + " 입니다.");
         System.out.println("solution 메소드의 반환 값은 " + sol.ss2(number2, target2) + " 입니다.");
+        System.out.println("newSolution 메소드의 반환 값은 " + sol.newSolution(number2, target2) + " 입니다.");
 
     }
 }
